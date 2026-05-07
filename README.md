@@ -57,64 +57,55 @@ cmake --build build
 
 ## 3. Input / Đầu vào
 
-## 3. Input / Đầu vào
+TChương trình nhận dữ liệu từ bàn phím (stdin).
 
-Chương trình nhận dữ liệu từ bàn phím thông qua stdin.
+Các mode hỗ trợ:
 
-Người dùng chọn mode hoạt động:
-- 1 = DES encrypt
-- 2 = DES decrypt
-- 3 = TripleDES encrypt
-- 4 = TripleDES decrypt
+1 = DES encrypt  
+2 = DES decrypt  
+3 = TripleDES encrypt  
+4 = TripleDES decrypt  
 
-Với DES:
-- nhập plaintext hoặc ciphertext dưới dạng chuỗi nhị phân
-- nhập key DES 64-bit
+DES:
+- plaintext/ciphertext nhập dưới dạng chuỗi nhị phân
+- key nhập dưới dạng khóa 64-bit nhị phân
+- hỗ trợ nhiều block 64-bit
+- block cuối nếu thiếu sẽ được zero padding
 
-Với TripleDES:
-- nhập plaintext hoặc ciphertext 64-bit
-- nhập 3 khóa K1, K2, K3
-
-Chương trình hỗ trợ xử lý nhiều block dữ liệu.
-Nếu block cuối không đủ 64 bit thì sẽ tự động thêm padding.
+TripleDES:
+- plaintext/ciphertext nhập dưới dạng chuỗi nhị phân 64-bit
+- sử dụng 3 khóa K1, K2, K3
+- dữ liệu nhập dưới dạng chuỗi bit
 
 ## 4. Output / Đầu ra
 
-Chương trình xuất kết quả ra màn hình dưới dạng chuỗi nhị phân.
+Chương trình in ra:
+- ciphertext sau khi mã hóa
+- plaintext sau khi giải mã
+- kết quả hiển thị dưới dạng chuỗi nhị phân
 
-Các chức năng hỗ trợ:
-- mã hóa DES
-- giải mã DES
-- mã hóa TripleDES
-- giải mã TripleDES
+DES:
+- hỗ trợ encrypt/decrypt
+- có thể in thêm round keys hoặc thông tin trung gian
 
-Ngoài kết quả cuối cùng, chương trình có thể hiển thị:
-- round keys
-- thông tin từng vòng mã hóa
-- trạng thái dữ liệu trung gian
-
-Ciphertext và plaintext cuối cùng luôn được in ở dạng binary để CI có thể kiểm tra tự động.
+TripleDES:
+- in ciphertext hoặc plaintext cuối cùng sau khi thực hiện EDE
 
 ## 5. Padding đang dùng
 
 Chương trình sử dụng zero padding.
 
-Nếu plaintext dài hơn 64 bit:
-- dữ liệu sẽ được chia thành nhiều block 64 bit
-- mỗi block được mã hóa tuần tự
+Cách hoạt động:
+- plaintext được chia thành các block 64-bit
+- nếu block cuối không đủ 64-bit thì thêm bit `0`
 
-Nếu block cuối nhỏ hơn 64 bit:
-- chương trình sẽ thêm bit `0` vào cuối cho đủ 64 bit
-
-Ưu điểm:
-- đơn giản
-- dễ cài đặt cho bài học nhập môn
+Ví dụ:
+101010 -> 1010100000...
 
 Hạn chế:
-- khó phân biệt dữ liệu thật và bit padding nếu plaintext kết thúc bằng `0`
-- không an toàn bằng các cơ chế padding chuẩn như PKCS#5 hoặc PKCS#7
-
-Vì vậy zero padding chỉ phù hợp cho mục đích học tập và minh họa nguyên lý DES.
+- zero padding không an toàn trong hệ thống thực tế
+- khó phân biệt dữ liệu gốc và bit `0` được thêm
+- chỉ phù hợp cho mục đích học tập nhập môn DES
 
 ## 6. Tests bắt buộc
 
