@@ -57,33 +57,64 @@ cmake --build build
 
 ## 3. Input / Đầu vào
 
-TODO_STUDENT: Mô tả rõ đầu vào của chương trình sau khi em hoàn thiện bài lab.
+## 3. Input / Đầu vào
 
-Gợi ý nên nêu:
-- plaintext đang được nhập như thế nào
-- key đang được nhập như thế nào
-- chương trình nhận 1 block hay nhiều block
-- định dạng dữ liệu là chuỗi bit, chuỗi ký tự hay file
+Chương trình nhận dữ liệu từ bàn phím thông qua stdin.
+
+Người dùng chọn mode hoạt động:
+- 1 = DES encrypt
+- 2 = DES decrypt
+- 3 = TripleDES encrypt
+- 4 = TripleDES decrypt
+
+Với DES:
+- nhập plaintext hoặc ciphertext dưới dạng chuỗi nhị phân
+- nhập key DES 64-bit
+
+Với TripleDES:
+- nhập plaintext hoặc ciphertext 64-bit
+- nhập 3 khóa K1, K2, K3
+
+Chương trình hỗ trợ xử lý nhiều block dữ liệu.
+Nếu block cuối không đủ 64 bit thì sẽ tự động thêm padding.
 
 ## 4. Output / Đầu ra
 
-TODO_STUDENT: Mô tả rõ đầu ra của chương trình.
+Chương trình xuất kết quả ra màn hình dưới dạng chuỗi nhị phân.
 
-Gợi ý nên nêu:
-- ciphertext hiển thị ra sao
-- có in round keys hay không
-- có hỗ trợ giải mã hay không
-- với TripleDES thì đầu ra gồm những gì
+Các chức năng hỗ trợ:
+- mã hóa DES
+- giải mã DES
+- mã hóa TripleDES
+- giải mã TripleDES
+
+Ngoài kết quả cuối cùng, chương trình có thể hiển thị:
+- round keys
+- thông tin từng vòng mã hóa
+- trạng thái dữ liệu trung gian
+
+Ciphertext và plaintext cuối cùng luôn được in ở dạng binary để CI có thể kiểm tra tự động.
 
 ## 5. Padding đang dùng
 
-TODO_STUDENT: Giải thích cơ chế padding em dùng.
+Chương trình sử dụng zero padding.
 
-Gợi ý:
-- nếu plaintext dài hơn 64 bit thì chia block như thế nào
-- nếu thiếu bit thì pad bằng `0` ra sao
-- hạn chế của zero padding là gì
-- vì sao cách này chỉ phù hợp cho bài học nhập môn, không phải thiết kế an toàn hoàn chỉnh trong thực tế
+Nếu plaintext dài hơn 64 bit:
+- dữ liệu sẽ được chia thành nhiều block 64 bit
+- mỗi block được mã hóa tuần tự
+
+Nếu block cuối nhỏ hơn 64 bit:
+- chương trình sẽ thêm bit `0` vào cuối cho đủ 64 bit
+
+Ưu điểm:
+- đơn giản
+- dễ cài đặt cho bài học nhập môn
+
+Hạn chế:
+- khó phân biệt dữ liệu thật và bit padding nếu plaintext kết thúc bằng `0`
+- không an toàn bằng các cơ chế padding chuẩn như PKCS#5 hoặc PKCS#7
+
+Vì vậy zero padding chỉ phù hợp cho mục đích học tập và minh họa nguyên lý DES.
 
 ## 6. Tests bắt buộc
 
